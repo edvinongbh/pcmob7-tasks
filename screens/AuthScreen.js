@@ -8,11 +8,11 @@ import {
   View,
   Image,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { PROFILE_SCREEN, API, API_LOGIN } from "../constants";
+import { API, API_LOGIN, API_SIGNUP, HOME_STACK } from "../constants";
 
 export default function AuthScreen() {
   const navigation = useNavigation();
@@ -20,7 +20,35 @@ export default function AuthScreen() {
   const [password, setPassword] = useState("");
   const [errorText, setErrorText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [isLoginScreen, setIsLoginScreen] = useState(true);
+  const [confirmPassword, setConfirmPassword] = useState("");
 
+  useEffect(() => {
+    return () => setLoading(true);
+  }, []);
+
+  async function signUp() {
+    setLoading(true);
+    if (password != confirmPassword) {
+      setErrorText("Your passwords don't match. Check and try again.");
+    } else {
+      try {
+        const response = await axios.post(API + API_SIGNUP, {
+          username,
+          password,
+        });
+        if (response.data.Error) {
+          // We have an error message for if the user already exists
+          setErrorText(response.data.Error);
+        } else {
+          login();
+        }
+      } catch (error) {
+        console.log("Failed logging in. Error: ", error.response);
+        setErrorText(error.response.data.description);
+      }
+    }
+  }
   async function login() {
     setErrorText("");
     setLoading(true);
@@ -31,7 +59,7 @@ export default function AuthScreen() {
         password,
       });
       await AsyncStorage.setItem("token", response.data.access_token);
-      navigation.navigate(PROFILE_SCREEN);
+      navigation.navigate(HOME_STACK);
     } catch (error) {
       console.log(error.response);
       setErrorText(error.response.data.description);
@@ -47,7 +75,9 @@ export default function AuthScreen() {
         }}
       />
 
-      <Text style={styles.title}>Family Login account</Text>
+      <Text style={styles.title}>
+        {isLoginScreen ? "Family member login account" : "Register new account"}
+      </Text>
 
       <TextInput
         style={styles.inputView}
@@ -64,17 +94,42 @@ export default function AuthScreen() {
         onChangeText={(pw) => setPassword(pw)}
       />
 
+      {!isLoginScreen && (
+        <TextInput
+          style={styles.inputView}
+          placeholder="Password Confirm"
+          secureTextEntry={true}
+          value={confirmPassword}
+          onChangeText={(pw) => setConfirmPassword(pw)}
+        />
+      )}
+
       <TouchableOpacity
         style={styles.button}
         onPress={async () => {
-          await login();
+          isLoginScreen ? await login() : await signUp();
         }}
       >
         {loading ? (
           <ActivityIndicator style={styles.buttonText} />
         ) : (
-          <Text style={styles.buttonText}>Login</Text>
+          <Text style={styles.buttonText}>
+            {isLoginScreen ? "Login" : "Register"}
+          </Text>
         )}
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => {
+          setIsLoginScreen(!isLoginScreen);
+          setErrorText("");
+        }}
+      >
+        <Text style={styles.switchText}>
+          {isLoginScreen
+            ? "No account? Sign up now."
+            : "Already have an account? Log in here."}
+        </Text>
       </TouchableOpacity>
 
       <Text style={styles.errorText}>{errorText}</Text>
@@ -83,6 +138,11 @@ export default function AuthScreen() {
 }
 
 const styles = StyleSheet.create({
+  switchText: {
+    fontSize: 12,
+    marginTop: 10,
+    color: "gray",
+  },
   errorText: {
     marginTop: 20,
     fontSize: 15,
@@ -98,7 +158,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 20,
-    marginBottom: 60,
+    marginBottom: 30,
     marginTop: 30,
   },
   inputView: {
@@ -114,7 +174,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: "center",
-    fontWeight: "400",
+    fontWeight: "200",
     fontSize: 17,
     padding: 20,
     color: "white",
