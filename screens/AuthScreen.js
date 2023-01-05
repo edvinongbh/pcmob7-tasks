@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     marginBottom: 60,
+    marginTop: 30,
   },
   inputView: {
     backgroundColor: "#F1F0F5",
