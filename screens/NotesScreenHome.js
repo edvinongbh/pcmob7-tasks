@@ -6,16 +6,10 @@ import {
   View,
 } from "react-native";
 import React from "react";
-
-const posts = [
-  {
-    id: 1,
-    title: "Add NotesScreenHome.js file",
-    content: "Make sure you don't have any errors when copying this code",
-  },
-];
+import { useSelector } from "react-redux";
 
 export default function NotesScreenHome() {
+  const posts = useSelector((state) => state.notes);
   function renderItem({ item }) {
     return (
       <TouchableOpacity style={styles.noteCard} onPress={() => {}}>
@@ -28,7 +22,7 @@ export default function NotesScreenHome() {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>notes</Text>
+      <Text style={styles.title}>remember leh!!</Text>
 
       <FlatList
         data={posts}
@@ -38,7 +32,7 @@ export default function NotesScreenHome() {
 
       <View style={{ flex: 1 }} />
       <TouchableOpacity style={styles.button} onPress={() => {}}>
-        <Text style={styles.buttonText}>Add Note</Text>
+        <Text style={styles.buttonText}>Add Task</Text>
       </TouchableOpacity>
     </View>
   );
@@ -68,12 +62,13 @@ const styles = StyleSheet.create({
     padding: 25,
   },
   title: {
+    textAlign: "center",
     fontWeight: "bold",
-    fontSize: 40,
+    fontSize: 30,
     marginBottom: 20,
   },
   button: {
-    backgroundColor: "black",
+    backgroundColor: "green",
     borderRadius: 15,
     width: "100%",
   },
