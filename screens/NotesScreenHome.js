@@ -43,7 +43,7 @@ export default function NotesScreenHome() {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>notes</Text>
+      <Text style={styles.title}>Remember Leh!</Text>
 
       {isLoading && <ActivityIndicator />}
 

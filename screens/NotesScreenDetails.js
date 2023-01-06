@@ -155,7 +155,7 @@ const styles = StyleSheet.create({
     padding: 25,
   },
   noteTitle: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: "600",
     marginTop: 30,
     marginBottom: 25,
