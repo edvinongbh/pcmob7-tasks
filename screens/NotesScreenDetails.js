@@ -20,7 +20,9 @@ export default function NotesScreenDetails() {
   const params = route.params;
   const [noteTitle, setNoteTitle] = useState(params.title);
   const [noteBody, setNoteBody] = useState(params.content);
-  const [noteName, setNoteName] = useState(params.content2);
+  const [noteName, setNoteName] = useState(params.name);
+  const [noteDate, setNoteDate] = useState(params.date);
+  const [noteTime, setNoteTime] = useState(params.time);
   const [editable, setEditable] = useState(false);
   const dispatch = useDispatch();
   const id = params.id;
@@ -31,7 +33,9 @@ export default function NotesScreenDetails() {
         id,
         title: noteTitle,
         content: noteBody,
-        content2: noteName,
+        name: noteName,
+        date: noteDate,
+        time: noteTime,
       };
       await dispatch(updatePostThunk(updatedPost));
     } catch (error) {
@@ -114,6 +118,24 @@ export default function NotesScreenDetails() {
         editable={editable}
         multiline={true}
       />
+      <TextInput
+        style={styles.noteDate}
+        placeholder={"Add Date"}
+        value={noteDate}
+        onChangeText={(text) => setNoteDate(text)}
+        selectionColor={"gray"}
+        editable={editable}
+        multiline={true}
+      />
+      <TextInput
+        style={styles.noteTime}
+        placeholder={"Add Time"}
+        value={noteTime}
+        onChangeText={(text) => setNoteTime(text)}
+        selectionColor={"gray"}
+        editable={editable}
+        multiline={true}
+      />
 
       <View style={{ flex: 1 }} />
       <TouchableOpacity
@@ -143,6 +165,14 @@ const styles = StyleSheet.create({
     fontWeight: "400",
   },
   notename: {
+    fontSize: 15,
+    fontWeight: "400",
+  },
+  notedate: {
+    fontSize: 15,
+    fontWeight: "400",
+  },
+  notetime: {
     fontSize: 15,
     fontWeight: "400",
   },

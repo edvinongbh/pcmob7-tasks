@@ -32,8 +32,10 @@ export default function NotesScreenHome() {
         onPress={() => navigation.navigate(NOTES_SCREEN.Details, item)}
       >
         <Text style={styles.noteCardTitle}>{item.title}</Text>
-        <Text style={styles.noteCardBodyText}></Text>
-        <Text style={styles.noteCardNameText}>
+        <Text style={styles.noteCardBodyText}>{item.name}</Text>
+        <Text style={styles.noteCardNameText}>{item.date}</Text>
+        <Text style={styles.noteCardDateText}>{item.time}</Text>
+        <Text style={styles.noteCardTimeText}>
           {item.content.substring(0, 120)}
         </Text>
       </TouchableOpacity>
@@ -85,6 +87,15 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "300",
   },
+  noteCardDateText: {
+    fontSize: 12,
+    fontWeight: "300",
+  },
+  noteCardTimeText: {
+    fontSize: 12,
+    fontWeight: "300",
+  },
+
   container: {
     flex: 1,
     backgroundColor: "#F2F5A9",

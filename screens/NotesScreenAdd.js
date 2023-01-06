@@ -19,9 +19,11 @@ export default function NotesScreenAdd() {
   const [noteTitle, setNoteTitle] = useState("");
   const [noteBody, setNoteBody] = useState("");
   const [noteName, setNoteName] = useState("");
+  const [noteDate, setNoteDate] = useState("");
+  const [noteTime, setNoteTime] = useState("");
   const dispatch = useDispatch();
 
-  const canSave = [noteTitle, noteBody, noteName].every(Boolean);
+  const canSave = [noteTitle, noteBody, noteName, noteDate].every(Boolean);
 
   async function savePost() {
     if (canSave) {
@@ -30,7 +32,9 @@ export default function NotesScreenAdd() {
           id: nanoid(),
           title: noteTitle,
           content: noteBody,
-          content2: noteName,
+          name: noteName,
+          date: noteDate,
+          time: noteTime,
         };
 
         await dispatch(addNewPost(post));
@@ -58,18 +62,35 @@ export default function NotesScreenAdd() {
         selectionColor={"gray"}
       />
       <TextInput
-        style={styles.noteBody}
-        placeholder={"Add notes"}
-        value={noteBody}
-        onChangeText={(text) => setNoteBody(text)}
-        selectionColor={"gray"}
-        multiline={true}
-      />
-      <TextInput
         style={styles.noteName}
         placeholder={"Add name"}
         value={noteName}
         onChangeText={(text) => setNoteName(text)}
+        selectionColor={"gray"}
+        multiline={true}
+      />
+      <TextInput
+        style={styles.noteDate}
+        placeholder={"Add Task Date"}
+        value={noteDate}
+        onChangeText={(text) => setNoteDate(text)}
+        selectionColor={"gray"}
+        multiline={true}
+      />
+      <TextInput
+        style={styles.noteTime}
+        placeholder={"Add Task Time"}
+        value={noteTime}
+        onChangeText={(text) => setNoteTime(text)}
+        selectionColor={"gray"}
+        multiline={true}
+      />
+
+      <TextInput
+        style={styles.noteBody}
+        placeholder={"Add notes"}
+        value={noteBody}
+        onChangeText={(text) => setNoteBody(text)}
         selectionColor={"gray"}
         multiline={true}
       />
@@ -106,6 +127,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "400",
   },
+  noteDate: {
+    fontSize: 15,
+    fontWeight: "400",
+  },
+  noteTime: {
+    fontSize: 15,
+    fontWeight: "400",
+  },
 
   button: {
     backgroundColor: "blue",
@@ -113,6 +142,7 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 20,
   },
+
   buttonText: {
     textAlign: "center",
     fontWeight: "400",
