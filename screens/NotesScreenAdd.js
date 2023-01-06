@@ -10,6 +10,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { nanoid } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
+import { addNewPost } from "../features/notesSlice";
 
 export default function NotesScreenAdd() {
   const navigation = useNavigation();
@@ -17,6 +20,31 @@ export default function NotesScreenAdd() {
   const [noteBody, setNoteBody] = useState("");
   const [noteName, setNoteName] = useState("");
   const [noteDate, setNoteDate] = useState("");
+  const [noteTime, setNoteTime] = useState("");
+  const dispatch = useDispatch();
+
+  const canSave = [noteTitle, noteBody, noteName].every(Boolean);
+
+  async function savePost() {
+    if (canSave) {
+      try {
+        const post = {
+          id: nanoid(),
+          title: noteTitle,
+          content: noteBody,
+          // how to add in content for rest of the note? e.g name, time , date....
+        };
+        //dispatch = send
+        // addNewPost = action/message
+        // post = payload/data
+        await dispatch(addNewPost(post));
+      } catch (error) {
+        console.error("Failed to save the post: ", error);
+      } finally {
+        navigation.goBack();
+      }
+    }
+  }
 
   return (
     <KeyboardAvoidingView
@@ -33,14 +61,7 @@ export default function NotesScreenAdd() {
         onChangeText={(text) => setNoteTitle(text)}
         selectionColor={"gray"}
       />
-      <TextInput
-        style={styles.noteBody}
-        placeholder={"Add your notes"}
-        value={noteBody}
-        onChangeText={(text) => setNoteBody(text)}
-        selectionColor={"gray"}
-        multiline={true}
-      />
+
       <TextInput
         style={styles.noteName}
         placeholder={"name"}
@@ -51,15 +72,34 @@ export default function NotesScreenAdd() {
       />
       <TextInput
         style={styles.noteDate}
-        placeholder={"Add task date"}
+        placeholder={"Add date"}
         value={noteDate}
         onChangeText={(text) => setNoteDate(text)}
         selectionColor={"gray"}
         multiline={true}
       />
+      <TextInput
+        style={styles.noteTime}
+        placeholder={"Add time"}
+        value={noteTime}
+        onChangeText={(text) => setNoteTime(text)}
+        selectionColor={"gray"}
+        multiline={true}
+      />
+      <TextInput
+        style={styles.noteBody}
+        placeholder={"Add your notes"}
+        value={noteBody}
+        onChangeText={(text) => setNoteBody(text)}
+        selectionColor={"gray"}
+        multiline={true}
+      />
 
       <View style={{ flex: 1 }} />
-      <TouchableOpacity style={styles.button} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={async () => await savePost()}
+      >
         <Text style={styles.buttonText}>Add Task</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
@@ -83,6 +123,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "400",
   },
+  noteName: {
+    fontSize: 15,
+    fontWeight: "400",
+  },
+
   button: {
     backgroundColor: "black",
     borderRadius: 15,

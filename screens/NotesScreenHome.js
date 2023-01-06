@@ -4,19 +4,33 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from "react-native";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { NOTES_SCREEN } from "../constants";
+import { NOTES_SCREEN, API_STATUS } from "../constants";
+import { fetchPosts } from "../features/notesSlice";
 
 export default function NotesScreenHome() {
-  const posts = useSelector((state) => state.notes);
+  const posts = useSelector((state) => state.notes.posts);
+  const notesStatus = useSelector((state) => state.notes.status);
+  const isLoading = notesStatus === API_STATUS.pending;
+  const dispatch = useDispatch();
   const navigation = useNavigation();
+
+  useEffect(() => {
+    if (notesStatus === API_STATUS.idle) {
+      dispatch(fetchPosts());
+    }
+  }, [notesStatus, dispatch]);
 
   function renderItem({ item }) {
     return (
-      <TouchableOpacity style={styles.noteCard} onPress={() => {}}>
+      <TouchableOpacity
+        style={styles.noteCard}
+        onPress={() => navigation.navigate(NOTES_SCREEN.Details, item)}
+      >
         <Text style={styles.noteCardTitle}>{item.title}</Text>
         <Text style={styles.noteCardBodyText}>
           {item.content.substring(0, 120)}
@@ -27,6 +41,8 @@ export default function NotesScreenHome() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>remember leh!!</Text>
+
+      {isLoading && <ActivityIndicator />}
 
       <FlatList
         data={posts}
