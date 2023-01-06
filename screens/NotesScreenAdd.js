@@ -19,8 +19,6 @@ export default function NotesScreenAdd() {
   const [noteTitle, setNoteTitle] = useState("");
   const [noteBody, setNoteBody] = useState("");
   const [noteName, setNoteName] = useState("");
-  const [noteDate, setNoteDate] = useState("");
-  const [noteTime, setNoteTime] = useState("");
   const dispatch = useDispatch();
 
   const canSave = [noteTitle, noteBody, noteName].every(Boolean);
@@ -32,11 +30,9 @@ export default function NotesScreenAdd() {
           id: nanoid(),
           title: noteTitle,
           content: noteBody,
-          // how to add in content for rest of the note? e.g name, time , date....
+          content2: noteName,
         };
-        //dispatch = send
-        // addNewPost = action/message
-        // post = payload/data
+
         await dispatch(addNewPost(post));
       } catch (error) {
         console.error("Failed to save the post: ", error);
@@ -61,36 +57,19 @@ export default function NotesScreenAdd() {
         onChangeText={(text) => setNoteTitle(text)}
         selectionColor={"gray"}
       />
-
-      <TextInput
-        style={styles.noteName}
-        placeholder={"name"}
-        value={noteName}
-        onChangeText={(text) => setNoteName(text)}
-        selectionColor={"green"}
-        multiline={true}
-      />
-      <TextInput
-        style={styles.noteDate}
-        placeholder={"Add date"}
-        value={noteDate}
-        onChangeText={(text) => setNoteDate(text)}
-        selectionColor={"gray"}
-        multiline={true}
-      />
-      <TextInput
-        style={styles.noteTime}
-        placeholder={"Add time"}
-        value={noteTime}
-        onChangeText={(text) => setNoteTime(text)}
-        selectionColor={"gray"}
-        multiline={true}
-      />
       <TextInput
         style={styles.noteBody}
-        placeholder={"Add your notes"}
+        placeholder={"Add notes"}
         value={noteBody}
         onChangeText={(text) => setNoteBody(text)}
+        selectionColor={"gray"}
+        multiline={true}
+      />
+      <TextInput
+        style={styles.noteName}
+        placeholder={"Add name"}
+        value={noteName}
+        onChangeText={(text) => setNoteName(text)}
         selectionColor={"gray"}
         multiline={true}
       />
@@ -100,7 +79,7 @@ export default function NotesScreenAdd() {
         style={styles.button}
         onPress={async () => await savePost()}
       >
-        <Text style={styles.buttonText}>Add Task</Text>
+        <Text style={styles.buttonText}>Save Task</Text>
       </TouchableOpacity>
     </KeyboardAvoidingView>
   );
@@ -109,7 +88,7 @@ export default function NotesScreenAdd() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#CEE3F6",
     paddingTop: 60,
     padding: 25,
   },
@@ -129,7 +108,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: "black",
+    backgroundColor: "blue",
     borderRadius: 15,
     width: "100%",
     marginBottom: 20,

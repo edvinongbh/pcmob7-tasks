@@ -20,6 +20,7 @@ export default function NotesScreenDetails() {
   const params = route.params;
   const [noteTitle, setNoteTitle] = useState(params.title);
   const [noteBody, setNoteBody] = useState(params.content);
+  const [noteName, setNoteName] = useState(params.content2);
   const [editable, setEditable] = useState(false);
   const dispatch = useDispatch();
   const id = params.id;
@@ -30,6 +31,7 @@ export default function NotesScreenDetails() {
         id,
         title: noteTitle,
         content: noteBody,
+        content2: noteName,
       };
       await dispatch(updatePostThunk(updatedPost));
     } catch (error) {
@@ -103,6 +105,15 @@ export default function NotesScreenDetails() {
         editable={editable}
         multiline={true}
       />
+      <TextInput
+        style={styles.noteName}
+        placeholder={"Add Name"}
+        value={noteName}
+        onChangeText={(text) => setNoteName(text)}
+        selectionColor={"gray"}
+        editable={editable}
+        multiline={true}
+      />
 
       <View style={{ flex: 1 }} />
       <TouchableOpacity
@@ -131,6 +142,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "400",
   },
+  notename: {
+    fontSize: 15,
+    fontWeight: "400",
+  },
+
   button: {
     backgroundColor: "black",
     borderRadius: 15,

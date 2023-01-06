@@ -27,6 +27,7 @@ export const addNewPost = createAsyncThunk(
     return response.data;
   }
 );
+
 export const updatePostThunk = createAsyncThunk(
   "posts/updatePost",
   async (updatedPost) => {
@@ -54,7 +55,7 @@ export const deletePostThunk = createAsyncThunk(
 );
 
 const notesSlice = createSlice({
-  name: "remember leh!!",
+  name: "notes",
   initialState,
   extraReducers(builder) {
     builder
@@ -63,13 +64,12 @@ const notesSlice = createSlice({
       })
       .addCase(fetchPosts.fulfilled, (state, action) => {
         state.status = API_STATUS.fulfilled;
+        // Add any fetched posts to the array
         state.posts = state.posts.concat(action.payload);
       })
-
       .addCase(fetchPosts.rejected, (state, action) => {
         state.status = API_STATUS.rejected;
         state.error = action.error.message;
-        // this state.error is for internal system use to show what is the error message
         console.log("Failed to fetch posts. Error:", action.error.message);
       })
       .addCase(addNewPost.fulfilled, (state, action) => {
@@ -90,7 +90,5 @@ const notesSlice = createSlice({
       });
   },
 });
-
-export const { noteAdded } = notesSlice.actions;
 
 export default notesSlice.reducer;

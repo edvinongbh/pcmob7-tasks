@@ -32,7 +32,8 @@ export default function NotesScreenHome() {
         onPress={() => navigation.navigate(NOTES_SCREEN.Details, item)}
       >
         <Text style={styles.noteCardTitle}>{item.title}</Text>
-        <Text style={styles.noteCardBodyText}>
+        <Text style={styles.noteCardBodyText}></Text>
+        <Text style={styles.noteCardNameText}>
           {item.content.substring(0, 120)}
         </Text>
       </TouchableOpacity>
@@ -40,7 +41,7 @@ export default function NotesScreenHome() {
   }
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>remember leh!!</Text>
+      <Text style={styles.title}>notes</Text>
 
       {isLoading && <ActivityIndicator />}
 
@@ -80,9 +81,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "300",
   },
+  noteCardNameText: {
+    fontSize: 12,
+    fontWeight: "300",
+  },
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#F2F5A9",
     paddingTop: 100,
     padding: 25,
   },
