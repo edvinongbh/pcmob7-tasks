@@ -49,7 +49,7 @@ export default function ProfileScreen() {
       </Text>
       <Image
         source={{ uri: photoUri ?? imgPlaceholder }}
-        style={{ height: 120, width: 120, borderRadius: 3, marginBottom: 20 }}
+        style={{ height: 250, width: 250, borderRadius: 5, marginBottom: 50 }}
       />
 
       <TouchableOpacity
@@ -80,26 +80,29 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     paddingTop: 100,
     padding: 25,
+    alignItems: "center",
   },
   title: {
     fontWeight: "bold",
     fontSize: 40,
     marginBottom: 20,
+    textAlign: "center",
   },
   outlinedButton: {
+    backgroundColor: "red",
     borderRadius: 3,
     borderWidth: 1,
-    width: 120,
+    width: 250,
   },
   outlinedButtonText: {
     textAlign: "center",
-    fontWeight: "600",
+    fontWeight: "900",
     fontSize: 12,
     padding: 15,
-    color: "black",
+    color: "white",
   },
   button: {
-    backgroundColor: "black",
+    backgroundColor: "orange",
     borderRadius: 15,
     width: "100%",
   },
