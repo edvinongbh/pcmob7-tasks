@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { NOTES_SCREEN, API_STATUS } from "../constants";
 import { fetchPosts } from "../features/notesSlice";
+import Animated, { SlideInLeft, SlideOutRight } from "react-native-reanimated";
 
 export default function NotesScreenHome() {
   const posts = useSelector((state) => state.notes.posts);
@@ -27,18 +28,23 @@ export default function NotesScreenHome() {
 
   function renderItem({ item }) {
     return (
-      <TouchableOpacity
-        style={styles.noteCard}
-        onPress={() => navigation.navigate(NOTES_SCREEN.Details, item)}
+      <Animated.View
+        entering={SlideInLeft.delay(item.index * 100)}
+        exiting={SlideOutRight.delay(300)}
       >
-        <Text style={styles.noteCardTitle}>{item.title}</Text>
-        <Text style={styles.noteCardBodyText}>{item.name}</Text>
-        <Text style={styles.noteCardNameText}>{item.date}</Text>
-        <Text style={styles.noteCardDateText}>{item.time}</Text>
-        <Text style={styles.noteCardTimeText}>
-          {item.content.substring(0, 120)}
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.noteCard}
+          onPress={() => navigation.navigate(NOTES_SCREEN.Details, item)}
+        >
+          <Text style={styles.noteCardTitle}>{item.title}</Text>
+          <Text style={styles.noteCardBodyText}>{item.name}</Text>
+          <Text style={styles.noteCardNameText}>{item.date}</Text>
+          <Text style={styles.noteCardDateText}>{item.time}</Text>
+          <Text style={styles.noteCardTimeText}>
+            {item.content.substring(0, 120)}
+          </Text>
+        </TouchableOpacity>
+      </Animated.View>
     );
   }
   return (
