@@ -16,6 +16,7 @@
     "@reduxjs/toolkit": "^1.9.1",
     "axios": "^1.2.2",
     "expo": "~47.0.9",
+    "expo-camera": "^13.1.0",
     "expo-constants": "~14.0.2",
     "expo-file-system": "~15.1.1",
     "expo-status-bar": "~1.4.2",
